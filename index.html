@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Đăng ký & Đăng nhập</title>
+  <style>
+    body { font-family: Arial; margin: 40px; }
+    input { display: block; margin: 8px 0; padding: 6px; width: 250px; }
+    button { padding: 8px 20px; margin-top: 10px; }
+    .form-section { margin-bottom: 40px; }
+  </style>
+</head>
+<body>
+
+  <div class="form-section">
+    <h2>Đăng ký</h2>
+    <input type="text" id="regUserId" placeholder="User ID" />
+    <input type="text" id="regNickName" placeholder="Nickname" />
+    <input type="password" id="regPassword" placeholder="Mật khẩu" />
+    <input type="text" id="regPhone" placeholder="Số điện thoại" />
+    <button onclick="register()">Đăng ký</button>
+    <p id="registerResult"></p>
+  </div>
+
+  <div class="form-section">
+    <h2>Đăng nhập</h2>
+    <input type="text" id="loginUserId" placeholder="User ID" />
+    <input type="password" id="loginPassword" placeholder="Mật khẩu" />
+    <button onclick="login()">Đăng nhập</button>
+    <p id="loginResult"></p>
+  </div>
+
+  <script>
+    const BASE_URL = "http://localhost:3000";
+
+    async function register() {
+      const userId = document.getElementById("regUserId").value;
+      const nickName = document.getElementById("regNickName").value;
+      const password = document.getElementById("regPassword").value;
+      const telephone = document.getElementById("regPhone").value;
+
+      const res = await fetch(`${BASE_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, nickName, password, telephone }),
+      });
+
+      const data = await res.json();
+      document.getElementById("registerResult").innerText = data.message || "Lỗi khi đăng ký";
+    }
+
+    async function login() {
+      const userId = document.getElementById("loginUserId").value;
+      const password = document.getElementById("loginPassword").value;
+
+      const res = await fetch(`${BASE_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, password }),
+      });
+
+      const data = await res.json();
+      document.getElementById("loginResult").innerText = data.message || "Lỗi khi đăng nhập";
+    }
+  </script>
+
+</body>
+</html>
